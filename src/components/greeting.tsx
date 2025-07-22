@@ -1,12 +1,9 @@
 import { Skeleton } from "@/components/ui/skeleton";
-import { User } from "@/lib/auth";
+import { useAuth } from "@/contexts/auth-provider";
 
-interface GreetingProps {
-  user: User | null;
-  isLoading: boolean;
-}
+export function Greeting() {
+  const { user, isLoading } = useAuth();
 
-export function Greeting({ user, isLoading }: GreetingProps) {
   if (isLoading) {
     return <Skeleton className="h-6 w-34" />;
   }

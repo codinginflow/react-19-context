@@ -1,14 +1,30 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { User } from "@/lib/auth";
+import { AuthContext } from "@/contexts/auth-provider";
+import { use } from "react";
 import { UserInfo } from "./user-info";
 import { UserProfileLoader } from "./user-profile-loader";
 
 interface UserProfileProps {
-  user: User | null;
-  isLoading: boolean;
+  disabled: boolean;
 }
 
-export function UserProfile({ user, isLoading }: UserProfileProps) {
+export function UserProfile({ disabled }: UserProfileProps) {
+  if (disabled) {
+    return (
+      <p className="text-muted-foreground text-center">
+        User profile is disabled
+      </p>
+    );
+  }
+
+  const authContext = use(AuthContext);
+
+  if (!authContext) {
+    throw Error("AuthContext is not available");
+  }
+
+  const { user, isLoading } = authContext;
+
   if (isLoading) {
     return <UserProfileLoader />;
   }
